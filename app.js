@@ -5,28 +5,43 @@ music.volume = 0.1;
 music.loop = true;
 music.play();
 
-var Sprite = function() {
-	this.element = $('<div></div>');
-	$('body').append(this.element);
-	this.element.css('background-color', 'red');
-
-	this.x = 0;
-	this.y = 0;
-	this.width = 100;
-	this.height = 100;
+var Sounds = function() {
+	this.audios = [];
+	this.index = 0;
 };
 
-Sprite.prototype.setSize = function(width, height) {
-	this.width = width;
-	this.height = height;
-	this.element.width(width).height(height);
+Sounds.prototype.load = function(source, params) {
+	params = params || {};
+	times = params.times || 5;
+	volume = params.volume || 1;
+	playbackRate = params.playbackRate || 1;
+
+	this.audios = [];
+	for (var i = 0; i < times; i ++) {
+		var audio = new Audio(source);
+		this.audios.push(audio);
+		audio.volume = volume;
+		audio.playbackRate = playbackRate;
+	}
 };
 
-Sprite.prototype.setPosition = function(x, y) {
-	this.x = x;
-	this.y = y;
-	this.element.css({top: y, left: x, position:'absolute'});
+Sounds.prototype.play = function() {
+	this.audios[this.index].play();
+	this.index ++;
+	if(this.index === this.audios.length) {
+		this.index = 0;
+	}
 };
+
+var typewriter_sound = new Sounds();
+typewriter_sound.load('sounds/typewriter.wav', {
+	volume: 0.5, playbackRate: 2
+});
+
+var meow_sound = new Sounds();
+meow_sound.load('sounds/mew-normal.ogg', {
+	volume: 0.1
+});
 
 var canvas_speechBubble = document.getElementById('speech');
 var canvas_cats = document.getElementById('cats');
@@ -47,6 +62,7 @@ var tick = function() {
 	
 	spawnCounter += spawnRate;
 	if(spawnCounter > 50) {
+		spawnCounter = 0;
 		addCat();
 	}
 
@@ -69,10 +85,7 @@ document.addEventListener('keyup', function(e) {
 		cats[i].hear(key);
 	}
 
-	var typewriter = new Audio('sounds/typewriter.wav');
-	typewriter.volume = 0.5;
-	typewriter.playbackRate = 2;
-	typewriter.play();
+	typewriter_sound.play();
 });
 
 // require('./drawground');
@@ -281,6 +294,8 @@ Cat.prototype.hear = function(key) {
 			this.word = '';
 			this.patience = this.startPatience;
 			this.isMad = false;
+
+			meow_sound.play();
 		}
 	}
 };
