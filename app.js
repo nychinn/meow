@@ -93,6 +93,7 @@ var startGame = function() {
 
 var game_start_keys = ['M', 'E', 'O', 'W'];
 var game_start_keys_index = -1;
+
 document.addEventListener('keyup', function(e) {
 	var key = keycode(e);
 
@@ -101,7 +102,8 @@ document.addEventListener('keyup', function(e) {
 		if(nextKey.toLowerCase() === key.toLowerCase()) {
 			game_start_keys_index ++;
 			if(game_start_keys_index === game_start_keys.length - 1) {
-				startGame();
+				meow_sound.play();
+				setTimeout(startGame, 2000);
 			}
 		}
 	}

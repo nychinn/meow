@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "watchify app.js -o bundle.js --verbose"
+    "build": "watchify app.js -o js/bundle.js --verbose"
   },
   "author": "",
   "license": "ISC",
