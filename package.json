@@ -1,0 +1,16 @@
+{
+  "name": "ritual",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "watchify app.js -o bundle.js --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^2.2.0",
+    "keycode": "^2.1.0"
+  }
+}

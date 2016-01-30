@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'upheavtt';
+    src: url('../fonts/upheavtt.eot');
+    src: url('../fonts/upheavtt.eot') format('embedded-opentype'),
+         url('../fonts/upheavtt.woff2') format('woff2'),
+         url('../fonts/upheavtt.woff') format('woff'),
+         url('../fonts/upheavtt.ttf') format('truetype'),
+         url('../fonts/upheavtt.svg#upheavtt') format('svg');
+}
