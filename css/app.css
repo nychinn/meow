@@ -6,8 +6,8 @@ body {
 span {
 	font-family: 'upheavtt';
 	height: auto;
-    width: auto;
-    white-space: nowrap;
+  width: auto;
+ 	white-space: nowrap;
 }
 
 #container {

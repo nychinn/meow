@@ -124,6 +124,7 @@ document.addEventListener('keyup', function(e) {
 
 	if(needs_meow) {
 		meow_sound.play();
+		console.log('meow_sound');
 		needs_meow = false;
 	}
 });
@@ -228,28 +229,7 @@ var addCat = function() {
 
 loadImages(images, function() { });
 
-var vocab = [
-	'MEOW',
-	'MEEOW',
-	'MEOOW',
-	'MEOWW',
-	'MMEEOOW',
-	'MMEOOW',
-	'MMEOWW',
-	'MEEOOW',
-	'MEEOWW',
-	'MEOOWW',
-	'MEEEOWW',
-	'MEOWMEOW',
-	'MMEEEOWW',
-	'MMMEEOW',
-	'MEEEOWW',
-	'MEEOOOW',
-	'MMEOWWW',
-	'MEOWWWW',
-	'MEEOOWW',
-	'NYAN'
-];
+var vocab = require('./dictionary');
 
 var Cat = function() {
 	this.speech = null;
@@ -268,6 +248,7 @@ var Cat = function() {
 	this.patience = 120;
 	this.startPatience = 120;
 	this.numWords = 2;
+	this.textWidth = 0;
 };
 
 Cat.prototype.draw = function() {
@@ -275,12 +256,15 @@ Cat.prototype.draw = function() {
 	var y = this.y;
 	var bubbleOffsetY = -40;
 	var bubbleOffsetX = -10;
-	var bubbleWidth = this.word.length * 11.0;
+	var bubbleWidth = this.word.length * 10.0;
 	var bubbleHeight = 44;
 	var speechYOffset = 2;
 
 	this.drawBody(x, y);
 	if(this.hasWord) {
+		this.drawSpeech(x + bubbleOffsetX - bubbleWidth / 2, y + bubbleOffsetY - bubbleHeight / 2 + speechYOffset, this.index);
+		bubbleWidth = this.textWidth;
+
 		this.drawSpeech(x + bubbleOffsetX - bubbleWidth / 2, y + bubbleOffsetY - bubbleHeight / 2 + speechYOffset, this.index);
 		this.drawBubble(x + bubbleOffsetX, y + bubbleOffsetY, bubbleWidth);
 	}
@@ -326,6 +310,7 @@ Cat.prototype.hear = function(key) {
 		this.numWords --;
 
 		if(this.numWords === 0) {
+			needs_meow = true;
 			this.remove();
 		} else {
 			this.removeSpeech();
@@ -335,7 +320,6 @@ Cat.prototype.hear = function(key) {
 			this.word = '';
 			this.patience = this.startPatience;
 			this.isMad = false;
-
 			needs_meow = true;
 		}
 	}
@@ -392,6 +376,7 @@ Cat.prototype.drawSpeech = function(x, y, index) {
 	}
 
 	this.lastIndex = this.index;
+	this.textWidth = this.speech.width();
 };
 
 Cat.prototype.drawMad = function(x, y) {
@@ -416,7 +401,61 @@ Cat.prototype.remove = function() {
 		}
 	}
 };
-},{"keycode":2}],2:[function(require,module,exports){
+},{"./dictionary":2,"keycode":3}],2:[function(require,module,exports){
+module.exports = [
+  'grumpy cat',
+  'maru',
+  'shironeko',
+  'banye',
+  'salem',
+  'chesire cat',
+  'crookshanks',
+  'snowbell',
+  'garfield',
+  'puss in boots',
+  'mr bigglesworth',
+  'sylvester',
+  'tom cat',
+  'felix the cat',
+  'arlene',
+  'artemis',
+  'doraemon',
+  'happy',
+  'luna',
+  'nyan cat',
+  'hello kitty',
+  'charmmy kitty',
+  'marie',
+  'meowth',
+  'persian',
+  'jiji',
+  'lucifer',
+  'scratchy',
+  'mrs norris',
+  'diana',
+  'miu miu',
+  'miao',
+  'miauw miauw',
+  'mew mew',
+  'miaow',
+  'meu meu',
+  'nyaaa',
+  'meow meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'meow', 'meow', 'meow', 'meow','meow','meow','meow','meow','meow','meow','meow','meow',
+  'miau'
+];
+},{}],3:[function(require,module,exports){
 // Source: http://jsfiddle.net/vWx8V/
 // http://stackoverflow.com/questions/5603195/full-list-of-javascript-keycodes
 
