@@ -16,6 +16,28 @@ span {
 	height: 320px;
 }
 
+#splash {
+	position: absolute;
+	background-image: url("../images/titlescreen.png");
+	width: 480px;
+	height: 320px;
+	left: 0;
+	top: 0;
+}
+
+#splash_text {
+	position: absolute;
+	left: 0;
+	top: 260px;
+	width: 480px;
+	height: 40px;
+	font-family: 'upheavtt';
+	font-size: 32px;
+	color: #ffffff;
+	letter-spacing: 0.5px;
+	text-align: center;
+}
+
 div {
 	-moz-user-select: none;
 	-khtml-user-select: none;

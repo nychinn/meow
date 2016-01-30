@@ -3,7 +3,6 @@ var keycode = require('keycode');
 var music = new Audio('sounds/Silly_Fun.mp3');
 music.volume = 0.1;
 music.loop = true;
-music.play();
 
 var Sounds = function() {
 	this.audios = [];
@@ -43,6 +42,8 @@ meow_sound.load('sounds/mew-normal.ogg', {
 	volume: 0.1
 });
 
+var needs_meow = false;
+
 var canvas_speechBubble = document.getElementById('speech');
 var canvas_cats = document.getElementById('cats');
 var ctx_speechBubble = canvas_speechBubble.getContext('2d');
@@ -58,10 +59,10 @@ var spawnRate = 1.0;
 var spawnCounter = 0;
 
 var tick = function() {
-	spawnRate *= 1.001;
+	spawnRate += 0.001;
 	
 	spawnCounter += spawnRate;
-	if(spawnCounter > 50) {
+	if(spawnCounter > 100) {
 		spawnCounter = 0;
 		addCat();
 	}
@@ -77,20 +78,50 @@ var tick = function() {
 	setTimeout(tick, 1000 / frameRate);
 };
 
-tick();
+var game_started = false;
+var startGame = function() {
+	game_started = true;
+	$('#splash_text').remove();
+	$('#splash').remove();
+	var cat = addCat();
+	cat.word = 'MEOW';
+	cat.hasWord = true;
 
+	music.play();
+	tick();
+};
+
+var game_start_keys = ['M', 'E', 'O', 'W'];
+var game_start_keys_index = -1;
 document.addEventListener('keyup', function(e) {
 	var key = keycode(e);
+
+	if(!game_started) {
+		var nextKey = game_start_keys[game_start_keys_index + 1];
+		if(nextKey.toLowerCase() === key.toLowerCase()) {
+			game_start_keys_index ++;
+			if(game_start_keys_index === game_start_keys.length - 1) {
+				startGame();
+			}
+		}
+	}
+
 	for(var i = 0; i < cats.length; i ++) {
 		cats[i].hear(key);
 	}
 
 	typewriter_sound.play();
+
+	if(needs_meow) {
+		meow_sound.play();
+		needs_meow = false;
+	}
 });
 
 // require('./drawground');
 
 var catsetImage = new Image();
+var catsetAngryImage = new Image();
 var speech_left_image = new Image();
 var speech_right_image = new Image();
 var speech_middle_image = new Image();
@@ -98,13 +129,14 @@ var speech_tail_image = new Image();
 var mad_image = new Image();
 
 catsetImage.src = 'images/cat-gray.png';
+catsetAngryImage.src = 'images/cat-gray-angry.png';
 speech_left_image.src = 'images/speech-left.png';
 speech_right_image.src = 'images/speech-right.png';
 speech_middle_image.src = 'images/speech-middle.png';
 speech_tail_image.src = 'images/speech-tail.png';
 mad_image.src = 'images/mad.png';
 
-var images = [catsetImage, speech_left_image, speech_right_image, speech_middle_image, speech_tail_image, mad_image];
+var images = [catsetImage, speech_left_image, speech_right_image, speech_middle_image, speech_tail_image, mad_image, catsetAngryImage];
 
 var loadImages = function(images, callback) {
 	var count = 0;
@@ -179,14 +211,12 @@ var addCat = function() {
 
 	catMap[[x, y].join(',')] = true;
 
+	cat.coord = [x, y];
+
 	return cat;
 };
 
-loadImages(images, function() {
-	var cat = addCat();
-	cat.word = 'MEOW';
-	cat.hasWord = true;
-});
+loadImages(images, function() { });
 
 var vocab = [
 	'MEOW',
@@ -237,7 +267,7 @@ Cat.prototype.draw = function() {
 	var bubbleOffsetX = -10;
 	var bubbleWidth = this.word.length * 11.0;
 	var bubbleHeight = 44;
-	var speechYOffset = 0;
+	var speechYOffset = 2;
 
 	this.drawBody(x, y);
 	if(this.hasWord) {
@@ -295,7 +325,7 @@ Cat.prototype.hear = function(key) {
 			this.patience = this.startPatience;
 			this.isMad = false;
 
-			meow_sound.play();
+			needs_meow = true;
 		}
 	}
 };
@@ -308,7 +338,9 @@ Cat.prototype.drawBody = function(x, y) {
 	var tileRow = 0;
 	var drawSize = 64;
 
-	ctx_cats.drawImage(catsetImage, tileCol * tileSize, tileRow * tileSize, tileSize, tileSize, x - drawSize / 2, y - drawSize / 2, drawSize, drawSize);
+	var image = this.isMad ? catsetAngryImage : catsetImage;
+
+	ctx_cats.drawImage(image, tileCol * tileSize, tileRow * tileSize, tileSize, tileSize, x - drawSize / 2, y - drawSize / 2, drawSize, drawSize);
 };
 
 Cat.prototype.drawBubble = function(x, y, width) {
@@ -363,6 +395,8 @@ Cat.prototype.removeSpeech = function() {
 
 Cat.prototype.remove = function() {
 	this.removeSpeech();
+	var id = this.coord.join(',');
+	delete catMap[id];
 
 	for(var i = 0; i < cats.length; i ++) {
 		if(cats[i] === this) {
