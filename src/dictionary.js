@@ -9,7 +9,7 @@ module.exports = [
   'snowbell',
   'garfield',
   'puss in boots',
-  'mr bigglesworth',
+  'cuddly',
   'sylvester',
   'tom cat',
   'felix the cat',

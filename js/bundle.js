@@ -23,8 +23,6 @@ var hideEndScreen = function() {
 	end_screen_shown = false;
 };
 
-hideEndScreen();
-
 // Map to store grid that has cats
 global.catMap = {};
 
@@ -83,7 +81,7 @@ var tick = function() {
 
 animate();
 
-var start_life = 10;
+var start_life = 9;
 var life = start_life;
 
 var drawHearts = function() {
