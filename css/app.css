@@ -23,6 +23,7 @@ span {
 	height: 320px;
 	left: 0;
 	top: 0;
+	background-color: #000000;
 }
 
 #splash_text {
@@ -36,6 +37,30 @@ span {
 	color: #ffffff;
 	letter-spacing: 0.5px;
 	text-align: center;
+}
+
+#splash_end_text {
+	position: absolute;
+	left: 0;
+	top: 220px;
+	width: 480px;
+	height: 40px;
+	font-family: 'upheavtt';
+	font-size: 32px;
+	color: #ffffff;
+	letter-spacing: 0.5px;
+	text-align: center;
+	z-index: 4;
+}
+
+#splash_end {
+	width: 480px;
+	height: 320px;
+	left: 0;
+	top: 0;
+	position: absolute;
+	background-color: #000000;
+	opacity: 0.3;
 }
 
 div {
