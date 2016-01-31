@@ -51,7 +51,15 @@ app.removeLife = function(amount) {
 
 Cat.app = app;
 
+var animate = function() {
+	tick();
+	setTimeout(animate, 1000 / frameRate);
+};
+
 var tick = function() {
+	if(!game_started) {
+		return;
+	}
 	if(!game_stopped) {
 		spawnRate += 0.001;
 
@@ -71,11 +79,11 @@ var tick = function() {
   }
 
   drawHearts();
-
-  setTimeout(tick, 1000 / frameRate);
 };
 
-var start_life = 1;
+animate();
+
+var start_life = 10;
 var life = start_life;
 
 var drawHearts = function() {
@@ -105,7 +113,6 @@ var startGame = function() {
   cat.hasWord = true;
 
   music.play();
-  tick();
 };
 
 var stopGame = function() {

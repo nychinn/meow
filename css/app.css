@@ -50,7 +50,7 @@ span {
 	color: #ffffff;
 	letter-spacing: 0.5px;
 	text-align: center;
-	z-index: 4;
+	z-index: 5;
 }
 
 #splash_end {
@@ -61,6 +61,7 @@ span {
 	position: absolute;
 	background-color: #000000;
 	opacity: 0.3;
+	z-index: 4;
 }
 
 div {
